@@ -1,0 +1,14 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "OpenCV-QuickbirdStudios"
+include ':app'
+
+// Remove/comment out the one you aren't going to need
+include ":opencv_VERSION"
+include ":opencv-contrib_VERSION"
