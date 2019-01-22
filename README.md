@@ -20,9 +20,17 @@ dependencies {
 ```
 
 and this in your project's build.gradle **repositories** section
-```
+```groovy
 repositories {
   jcenter()
 }
+```
+
+Don't forget to also initializie OpenCV with a statement like this e.g. in your Application class:
+```kotlin
+if (!OpenCVLoader.initDebug())
+   Log.d("ERROR", "Unable to load OpenCV");
+else
+   Log.d("SUCCESS", "OpenCV loaded");
 ```
 
