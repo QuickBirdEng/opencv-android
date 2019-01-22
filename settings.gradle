@@ -1,1 +1,1 @@
-include ':app', ':opencv3_4_1', ':opencv3_4_4_contrib'
+include ':app', ':opencv3_4_1', ':opencv3_4_4_contrib', ':opencv4_0_1'

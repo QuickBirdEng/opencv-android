@@ -1,0 +1,135 @@
+
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+ext {
+    bintrayOrg = 'quickbirdstudios'
+    bintrayRepo = 'android'
+    bintrayName = 'opencv'
+
+    publishedGroupId = 'com.quickbirdstudios'
+    libraryName = 'opencv'
+    artifact = 'opencv'
+
+    libraryDescription = 'QuickBird Studios Bundle for OpenCV'
+
+    gitUrl = 'https://github.com/quickbirdstudios/opencv-android'
+    siteUrl = 'http://quickbirdstudios.com'
+
+
+    libraryVersion = '4.0.1'
+
+    developerId = 'quickbirdstudios'
+    developerName = 'QuickBird Studios GmbH'
+    developerEmail = 'contact@quickbirdstudios.com'
+
+    licenseName = '3-clause BSD License'
+    licenseUrl = 'https://opencv.org/license.html'
+    allLicenses = ["BSD 3-Clause"]
+}
+
+println "OpenCV: " + project.buildscript.sourceFile
+
+android {
+    compileSdkVersion 26
+    //buildToolsVersion "x.y.z" // not needed since com.android.tools.build:gradle:3.0.0
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 26
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['native/libs']
+            java.srcDirs = ['java/src']
+            aidl.srcDirs = ['java/src']
+            res.srcDirs = ['java/res']
+            manifest.srcFile 'java/AndroidManifest.xml'
+        }
+    }
+}
+
+dependencies {
+}
+
+
+
+apply plugin: 'com.github.dcendents.android-maven'
+group = publishedGroupId                               // Maven Group ID for the artifact
+
+
+apply plugin: 'com.jfrog.bintray'
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+publishing {
+    publications {
+        aar(MavenPublication) {
+
+            // Thanks to https://stackoverflow.com/questions/24743562/gradle-not-including-dependencies-in-published-pom-xml
+            // ###############################################################
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.api.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+
+            }
+            // ##############################################################
+
+
+            groupId "$publishedGroupId"
+            version = "$libraryVersion"
+            artifactId "$bintrayName"
+
+            artifact("$buildDir/outputs/aar/opencv4_0_1-release.aar")
+            artifact sourceJar
+        }
+    }
+}
+
+// Bintray
+bintray {
+    user = "$bintray_user"
+    key = "$bintray_apikey"
+    publications = ['aar']
+    pkg {
+        userOrg = bintrayOrg
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            name = "$libraryVersion"
+            desc = "$libraryVersion"
+            gpg {
+                sign = false //Determines whether to GPG sign the files. The default is false
+                passphrase = "$bintray_gpg_password"
+                //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
+}

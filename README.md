@@ -13,6 +13,9 @@ dependencies {
   
   // opencv 3.4.4 with contribution packages
   implementation 'com.quickbirdstudios:opencv:3.4.4-contrib'
+  
+  // opencv 4.0.1
+  implementation 'com.quickbirdstudios:opencv:4.0.1'
 }
 ```
 
