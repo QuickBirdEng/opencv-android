@@ -3,7 +3,7 @@ Easy way to integrate OpenCv into your Android project via Gradle.
 **No NDK dependency needed** - just include this library and you are good to go.  
   
   
-Include one of this depencencies in your module's build.gradle **dependencies** section
+Include one of this dependencies in your module's build.gradle **dependencies** section
 
 ```groovy
 dependencies {
@@ -32,11 +32,11 @@ repositories {
 }
 ```
 
-Don't forget to also initializie OpenCV with a statement like this e.g. in your Application class:
+Don't forget to also initialize OpenCV with a statement like this e.g. in your Application class:
 ```kotlin
 if (!OpenCVLoader.initDebug())
-   Log.d("ERROR", "Unable to load OpenCV");
+   Log.e("OpenCv", "Unable to load OpenCV");
 else
-   Log.d("SUCCESS", "OpenCV loaded");
+   Log.d("OpenCv", "OpenCV loaded");
 ```
 
