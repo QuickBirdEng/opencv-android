@@ -1,1 +1,5 @@
-include ':app', ':opencv3_4_1', ':opencv3_4_4_contrib', ':opencv4_0_1'
+include ':app'
+include ':opencv3_4_1'
+include ':opencv3_4_5'
+include ':opencv3_4_4_contrib'
+include ':opencv4_0_1'
