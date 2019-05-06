@@ -19,6 +19,9 @@ dependencies {
  
   // opencv 4.0.1
   implementation 'com.quickbirdstudios:opencv:4.0.1'
+  
+  // opencv 4.1.0
+  implementation 'com.quickbirdstudios:opencv:4.1.0'
 }
 ```
 
